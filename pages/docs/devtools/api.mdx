@@ -1,0 +1,161 @@
+import { Steps, Callout } from "nextra/components";
+
+# API
+
+This set of functions is used to interact with the OS, desktop environment, and other applications.
+
+<Callout type="info">You can use API functions anywhere.</Callout>
+
+## Clipboard
+
+Methods to interact with the clipboard.
+
+- copyToClipboard
+- pasteToCurrentWindow
+- readClipboard (right now only returns text, but in the future it will return images, html, svg, etc.)
+
+```tsx showLineNumbers {4,10,17,24-26}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { clipboard } = api;
+const { copyToClipboard, pasteToCurrentWindow, readClipboard } = clipboard;
+const items: ExtensionItems = () => [
+  {
+    title: "Copy actual datetime",
+    description: "Copy actual datetime to clipboard",
+    onClick: () => {
+      copyToClipboard(new Date().toLocaleString());
+    },
+  },
+  {
+    title: "Paste datetime",
+    description: "Paste datetime to current window",
+    onClick: () => {
+      pasteToCurrentWindow(new Date().toLocaleString());
+    },
+  },
+  {
+    title: "What's in clipboard?",
+    description: "Read clipboard",
+    onClick: () => {
+      readClipboard().then((clipboardText) => {
+        alert(clipboardText);
+      });
+    },
+  },
+];
+```
+
+## Music
+
+Methods to interact with the media player.
+
+- play/pause
+- next
+- previous
+- volume
+
+```tsx showLineNumbers {4,9,15,21,27,33,39}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { music } = api;
+const { nextMedia, playPause, prevMedia, setVolume } = music;
+const items: ExtensionItems = () => [
+  {
+    title: "Mute",
+    onClick: () => {
+      setVolume("0%");
+    },
+  },
+  {
+    title: "Volume +10%",
+    onClick: () => {
+      setVolume("10%+");
+    },
+  },
+  {
+    title: "Volume -10%",
+    onClick: () => {
+      setVolume("10%-");
+    },
+  },
+  {
+    title: "Play/Pause",
+    onClick: () => {
+      playPause();
+    },
+  },
+  {
+    title: "Next",
+    onClick: () => {
+      nextMedia();
+    },
+  },
+  {
+    title: "Previous",
+    onClick: () => {
+      prevMedia();
+    },
+  },
+];
+```
+
+## Notifications
+
+Methods to interact with the OS notifications.
+
+> **Note:** Tauri seems to use the freedesktop.org icon naming specification for icons see https://specifications.freedesktop.org/icon-naming-spec/latest/ar01s04.html
+
+```tsx showLineNumbers {4,9-13}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { notifications } = api;
+const { sendNotification } = notifications;
+const items: ExtensionItems = () => [
+  {
+    title: "Say Hi 👋",
+    onClick: () => {
+      sendNotification({
+        title: "Hello there!",
+        body: "General <b>Kenobi</b>!",
+        icon: "face-cool",
+      });
+    },
+  },
+];
+```
+
+## Shell
+
+Methods to interact with the OS shell.
+
+### openURI
+
+Opens a URI with the default application.
+
+```tsx showLineNumbers {4,9,15,21}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { shell } = api;
+const { openURI } = shell;
+const items: ExtensionItems = () => [
+  {
+    title: "Open URL",
+    onClick: () => {
+      openURI("https://github.com/JulianKominovic");
+    },
+  },
+  {
+    title: "Open URL in firefox",
+    onClick: () => {
+      openURI("https://github.com/JulianKominovic", "firefox");
+    },
+  },
+  {
+    title: "Open file",
+    onClick: () => {
+      openURI("home/example/test.txt");
+    },
+  },
+];
+```

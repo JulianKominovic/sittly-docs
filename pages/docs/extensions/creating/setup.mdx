@@ -1,0 +1,73 @@
+import { Steps } from "nextra-theme-docs";
+
+# Setup
+
+Since Sittly extensions are written in TypeScript and React, you will need to install tools related to those technologies.
+
+<Steps>
+
+### Node
+
+You will need:
+
+1. Node.js
+2. npm, yarn or pnpm
+
+I strongly recommend using [pnpm](https://pnpm.js.org/) as it is the fastest and most efficient package manager and use [nvm](https://github.com/nvm-sh/nvm) to manage your Node.js versions.
+
+1. Download **nvm** https://github.com/nvm-sh/nvm#installing-and-updating
+2. Install node 18 or higher
+
+```bash filename="terminal" copy
+nvm install 18
+```
+
+### Install pnpm
+
+```bash filename="terminal" copy
+npm install -g pnpm
+```
+
+### Git
+
+You will need to install [Git](https://git-scm.com/) to clone the repository.
+
+```bash filename="terminal" copy
+sudo apt install git
+```
+
+### Use github template
+
+Go to https://github.com/JulianKominovic/sittly-extension-template
+
+![Sittly github template](assets/images/sittly-github-template.png)
+
+![sittly github template repo create](assets/images/sittly-github-template-repo-create.png)
+
+### Clone your new repository
+
+```bash filename="terminal" copy
+git clone YOUR_REPO_GIT_URL .sittly/extensions
+```
+
+**Replace YOUR_REPO_GIT_URL with your repo url, please keep `.sittly/extensions`**
+
+### Move to your new repository
+
+```bash filename="terminal" copy
+cd YOUR_REPO_NAME
+```
+
+### Install dependencies
+
+```bash filename="terminal" copy
+pnpm install
+```
+
+### IDE
+
+This is very subjective, but I recommend using [VSCode](https://code.visualstudio.com/).
+
+### You are ready to start coding! 🎉
+
+</Steps>

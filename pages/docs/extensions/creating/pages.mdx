@@ -1,0 +1,119 @@
+import { FileTree, Callout } from "nextra/components";
+
+# Pages
+
+- Sittly can handle unlimited number of pages.
+- Each page must have a:
+  - `name` - The name of the page
+  - `route` - The route of the page
+  - `description` - The description of the page
+  - `icon` - The icon of the page
+  - `component` - The component of the page
+
+## Register pages
+
+```tsx filename="index.tsx" showLineNumbers {6-17,22}
+import { BsEmojiSmile } from "react-icons/bs";
+import { ExtensionPages } from "sittly-devtools/dist/types";
+
+const { components, hooks, api, register } = window.SittlyDevtools;
+
+const pages: ExtensionPages = [
+  {
+    name: "Example",
+    route: "/example",
+    description: "Example page",
+    icon: <BsEmojiSmile />,
+    component: () => {
+      const [hi, setHi] = useState("Hi there!");
+      return <div>My page</div>;
+    },
+  },
+];
+
+/**
+ * @important Don't forget to register your extension
+ */
+register({
+  pages,
+});
+```
+
+## Examples
+
+- https://github.com/JulianKominovic/sittly-extension-template
+
+### Emojis
+
+```tsx filename="index.tsx" showLineNumbers
+import { BsClipboard, BsEmojiSmile } from "react-icons/bs";
+import * as unicodeEmoji from "unicode-emoji";
+import { ExtensionPages } from "sittly-devtools/dist/types";
+
+const { components, hooks, api, register } = window.SittlyDevtools;
+const { Command } = components;
+const { useServices } = hooks;
+const { clipboard } = api;
+const { pasteToCurrentWindow, copyToClipboard } = clipboard;
+const emojis = unicodeEmoji.getEmojis();
+
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    description: "A collection of emojis",
+    icon: <BsEmojiSmile />,
+    component: () => {
+      const setContextMenuOptions = useServices(
+        (state) => state.setContextMenuOptions
+      );
+      return (
+        <Command.Grid
+          id="emojis-page-grid"
+          columns={4}
+          items={emojis.map((emoji) => {
+            return {
+              onClick() {
+                pasteToCurrentWindow(emoji.emoji);
+              },
+              onHighlight() {
+                setContextMenuOptions([
+                  {
+                    title: "Copy",
+                    onClick() {
+                      copyToClipboard(emoji.emoji);
+                    },
+                    description: `Copy ${emoji.emoji} to the clipboard`,
+                    icon: <BsClipboard />,
+                  },
+                ]);
+              },
+              filteringText: emoji.description,
+              customChildren: (
+                <div
+                  style={{
+                    fontSize: "3rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {emoji.emoji}
+                </div>
+              ),
+              className: "flex items-center justify-center",
+            };
+          })}
+        />
+      );
+    },
+  },
+];
+
+/**
+ * @important Don't forget to register your extension
+ */
+register({
+  pages,
+});
+```

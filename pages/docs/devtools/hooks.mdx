@@ -1,0 +1,180 @@
+import { Steps, Callout } from "nextra/components";
+
+# Hooks
+
+<Callout type="info">
+  Hooks must be used inside of a React functional component.
+</Callout>
+
+## useRouter
+
+Sittly uses React Router under the hood, so you can use the `useRouter` hook to access the router's methods and properties.
+
+```tsx showLineNumbers /useRouter/ {9-10,13-18}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { useRouter } = hooks;
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    component: () => {
+      const { goBack, goForward, goTo, goToHome, location, reload } =
+        useRouter();
+      return (
+        <>
+          <button onClick={goBack}>Go back</button>
+          <button onClick={goForward}>Go forward</button>
+          <button onClick={goToHome}>Go to home</button>
+          <button onClick={() => goTo("/emojis")}>Go to /emojis</button>
+          <button onClick={reload}>Reload</button>
+          <p>Current location: {location.pathname}</p>
+        </>
+      );
+    },
+    description: "A collection of emojis",
+    icon: null,
+  },
+];
+```
+
+## useLocalStorage
+
+A hook to store data in the browser's local storage and take a reactive approach to it.
+
+```tsx showLineNumbers /useLocalStorage/ {9,12,15}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { useLocalStorage } = hooks;
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    component: () => {
+      const [favEmoji, setFavEmoji] = useLocalStorage<string>("favEmoji", "");
+      return (
+        <>
+          <button onClick={() => setFavEmoji("🤯")}>
+            Replace favourite emoji
+          </button>
+          <p>Favourite emoji is: {favEmoji}</p>
+        </>
+      );
+    },
+    description: "A collection of emojis",
+    icon: null,
+  },
+];
+```
+
+## useServices
+
+This hooks exposes the services that are available in the current context.
+
+<Callout type="warning">
+  Be careful when using this hook, as it shares internal states and methods with
+  Sittly you can accidentally break something.
+</Callout>
+
+This hook uses Zustand under the hood, so you can use it to subscribe to changes in the services.
+
+[Zustand](https://github.com/pmndrs/zustand) is a extremely lightweight and performant state management library.
+
+Please read the [Zustand documentation](https://github.com/pmndrs/zustand#selecting-multiple-state-slices)
+
+### Accesing music state
+
+```tsx showLineNumbers /useServices/ {9-17,20}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { useServices } = hooks;
+const pages: ExtensionPages = [
+  {
+    name: "music",
+    route: "/music",
+    component: () => {
+      const {
+        album,
+        artist,
+        currentMillis,
+        durationMillis,
+        remainingMillis,
+        status,
+        title,
+      } = useServices((state) => state.music);
+      return (
+        <p>
+          Listening to {title} by {artist} from {album}
+        </p>
+      );
+    },
+    description: "A collection of music",
+    icon: null,
+  },
+];
+```
+
+### Accesing searchbar value
+
+```tsx showLineNumbers /useServices/ {9,12}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { useServices } = hooks;
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    component: () => {
+      const searchbarText = useServices((state) => state.searchbarText);
+      return (
+        <p>
+          User is searching: <strong>{searchbarText}</strong>
+        </p>
+      );
+    },
+    description: "A collection of emojis",
+    icon: null,
+  },
+];
+```
+
+### setContextMenuOptions
+
+You might be using this hook to add context menu options to the Sittly context menu when user highlight some item.
+
+See [Emoji example usage](https://github.com/JulianKominovic/sittly-extension-template/blob/312cbd78a8713d47a5864ad4e23e01e179539074/index.tsx#L30C16-L30C16)
+
+```tsx showLineNumbers /useServices/ {9-11,15-23}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const { useServices } = hooks;
+const pages: ExtensionPages = [
+  {
+    name: "context-menu-example",
+    route: "/context-menu-example",
+    component: () => {
+      const setContextMenuOptions = useServices(
+        (state) => state.setContextMenuOptions
+      );
+      return (
+        <button
+          onClick={() =>
+            setContextMenuOptions([
+              {
+                onClick: () => {
+                  alert("You clicked this context menu option!");
+                },
+                title: "Click me!",
+              },
+            ])
+          }
+        >
+          Add context menu option
+        </button>
+      );
+    },
+    description: "A collection of context-menu-example",
+    icon: null,
+  },
+];
+```

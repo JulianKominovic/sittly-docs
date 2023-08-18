@@ -1,0 +1,26 @@
+# Can I use Sittly?
+
+You must meet the following requirements to use Sittly:
+
+## System Requirements
+
+### Operating System
+
+- ❌ ~Windows~
+- ❌ ~MacOS~
+- ✅ Linux
+
+### X11 desktop
+
+You must be using a X11 based desktop environment (e.g. GNOME, KDE, XFCE, etc.)
+
+If you don't know what this means throw this in your terminal and see if it works:
+
+```bash filename="terminal" copy
+echo $XDG_SESSION_TYPE
+```
+
+If it prints `x11` then you're good to go!
+If not then you're probably using a Wayland based desktop environment (e.g. GNOME on Wayland) and Sittly won't work for you unless you switch to a X11 based desktop environment.
+
+[Here how change to X11 desktop on GNOME](https://askubuntu.com/a/1413490)

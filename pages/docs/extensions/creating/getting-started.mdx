@@ -1,0 +1,194 @@
+import { FileTree, Callout } from "nextra/components";
+
+# Getting started
+
+<Callout type="info" emoji="">
+  Please first read the [Setup](./setup.mdx)
+</Callout>
+
+## Folder structure
+
+I **will only explain the relavant files** to you.
+
+The rest is handled
+by the build script and Sittly.
+
+<FileTree>
+  <FileTree.Folder name="your-extension-name" defaultOpen>
+    <FileTree.Folder defaultOpen name="dist">
+      <FileTree.File name="compiled.js" />
+    </FileTree.Folder>
+    <FileTree.File name="README.md" />
+    <FileTree.File name="index.tsx" />
+  </FileTree.Folder>
+</FileTree>
+
+Those files are the only ones you need to care about.
+
+### index.tsx
+
+This is the main file of your extension.
+
+It will be compiled to `dist/compiled.js` and then loaded by Sittly.
+
+This explanation will be in TypeScript and is extracted from https://github.com/JulianKominovic/sittly-extension-template
+
+#### Imports
+
+You will have all the tools you need to create your extension inside `window.SittlyDevtools` global variable.
+
+```typescript filename="index.tsx" showLineNumbers {1}
+const { components, hooks, api, register } = window.SittlyDevtools;
+const { Command } = components;
+const { useServices } = hooks;
+const { clipboard } = api;
+const { pasteToCurrentWindow, copyToClipboard } = clipboard;
+```
+
+Also, you can import any other library you want for example: `react-icons`.
+
+_Just don't forget to install it first._
+
+```typescript filename="index.tsx" showLineNumbers {1}
+import { BsClipboard, BsEmojiSmile } from "react-icons/bs";
+const { components, hooks, api, register } = window.SittlyDevtools;
+const { Command } = components;
+const { useServices } = hooks;
+const { clipboard } = api;
+const { pasteToCurrentWindow, copyToClipboard } = clipboard;
+```
+
+#### Metadata
+
+This is the metadata of your extension.
+
+It's important to Sittly to know what your extension is about and how to display it.
+
+<Callout type="warning" emoji="⚠️">
+  `repoUrl` prop is **very important**
+  
+  if it is not provided, Sittly will not be able to handle your extension.
+
+</Callout>
+
+```typescript filename="index.tsx" showLineNumbers {1-6}
+const metadata: ExtensionMetadata = {
+  name: "Emojis",
+  description: "Emojis for everyone!",
+  icon: <BsEmojiSmile />,
+  repoUrl: "https://github.com/JulianKominovic/sittly-emoji-extension",
+};
+```
+
+#### Register
+
+You must register your extension with the `register` function.
+
+<Callout type="warning" emoji="⚠️">
+  Don't forget to use the register function at the end of your file.
+</Callout>
+
+```typescript filename="index.tsx" showLineNumbers {7-10} /register/
+import { BsClipboard, BsEmojiSmile } from "react-icons/bs";
+import * as unicodeEmoji from "unicode-emoji";
+import { ExtensionMetadata, ExtensionPages } from "sittly-devtools/dist/types";
+
+const { components, hooks, api, register } = window.SittlyDevtools;
+
+register({
+  pages,
+  metadata,
+});
+```
+
+You can register pages, items, no results, and more.
+
+#### Overview
+
+This is the overview of the `index.tsx` file.
+
+Again, this is extracted from https://github.com/JulianKominovic/sittly-extension-template/blob/main/index.tsx a working extension you can download and use.
+
+Here I'm using [unicode-emoji](https://www.npmjs.com/package/unicode-emoji) to get all the emojis.
+
+```typescript filename="index.tsx" showLineNumbers
+import { BsClipboard, BsEmojiSmile } from "react-icons/bs";
+import * as unicodeEmoji from "unicode-emoji";
+import { ExtensionMetadata, ExtensionPages } from "sittly-devtools/dist/types";
+
+const { components, hooks, api, register } = window.SittlyDevtools;
+const { Command } = components;
+const { useServices } = hooks;
+const { clipboard } = api;
+const { pasteToCurrentWindow, copyToClipboard } = clipboard;
+const emojis = unicodeEmoji.getEmojis();
+
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    component: () => {
+      const setContextMenuOptions = useServices(
+        (state) => state.setContextMenuOptions
+      );
+      return (
+        <Command.Grid
+          id="emojis-page-grid"
+          columns={4}
+          items={emojis.map((emoji) => {
+            return {
+              onClick() {
+                pasteToCurrentWindow(emoji.emoji);
+              },
+              onHighlight() {
+                setContextMenuOptions([
+                  {
+                    title: "Copy",
+                    onClick() {
+                      copyToClipboard(emoji.emoji);
+                    },
+                    description: `Copy ${emoji.emoji} to the clipboard`,
+                    icon: <BsClipboard />,
+                  },
+                ]);
+              },
+              filteringText: emoji.description,
+              customChildren: (
+                <div
+                  style={{
+                    fontSize: "3rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {emoji.emoji}
+                </div>
+              ),
+              className: "flex items-center justify-center",
+            };
+          })}
+        />
+      );
+    },
+    description: "A collection of emojis",
+    icon: <BsEmojiSmile />,
+  },
+];
+
+/**
+ * Metadata is really important, it's used to display your extension in the app.
+ * @see docs.com
+ */
+const metadata: ExtensionMetadata = {
+  name: "Emojis",
+  description: "Emojis for everyone!",
+  icon: <BsEmojiSmile />,
+  repoUrl: "https://github.com/JulianKominovic/sittly-emoji-extension",
+};
+
+register({
+  pages,
+  metadata,
+});
+```

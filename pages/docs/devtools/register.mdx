@@ -1,0 +1,86 @@
+# Register
+
+Used for Sittly to register a new extension.
+
+All items, pages, no-results, metadata and context menu options must be registered using `register` function from `sittly devtools`.
+
+```tsx showLineNumbers {74-78}
+const { components, hooks, api, register, types, utils } =
+  window.SittlyDevtools;
+const items: ExtensionItems = () => [
+  {
+    title: "Copy random emoji",
+    onClick: () => {
+      const emojis = unicodeEmoji.getEmojis();
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+      api.clipboard.copyToClipboard(randomEmoji);
+    },
+  },
+];
+
+const pages: ExtensionPages = [
+  {
+    name: "Emojis",
+    route: "/emojis",
+    icon: <BsEmojiSmile />,
+    description: "Emojis for everyone!",
+    component: () => {
+      const setContextMenuOptions = useServices(
+        (state) => state.setContextMenuOptions
+      );
+      return (
+        <Command.Grid
+          id="emojis-page-grid"
+          columns={4}
+          items={emojis.map((emoji) => {
+            return {
+              onClick() {
+                pasteToCurrentWindow(emoji.emoji);
+              },
+              onHighlight() {
+                setContextMenuOptions([
+                  {
+                    title: "Copy",
+                    onClick() {
+                      copyToClipboard(emoji.emoji);
+                    },
+                    description: `Copy ${emoji.emoji} to the clipboard`,
+                    icon: <BsClipboard />,
+                  },
+                ]);
+              },
+              filteringText: emoji.description,
+              customChildren: (
+                <div
+                  style={{
+                    fontSize: "3rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {emoji.emoji}
+                </div>
+              ),
+              className: "flex items-center justify-center",
+            };
+          })}
+        />
+      );
+    },
+  },
+];
+
+const metadata: ExtensionMetadata = {
+  name: "Emojis",
+  description: "Emojis for everyone!",
+  icon: <BsEmojiSmile />,
+  repoUrl: "https://github.com/JulianKominovic/sittly-emoji-extension",
+};
+
+register({
+  pages,
+  items,
+  metadata,
+});
+```

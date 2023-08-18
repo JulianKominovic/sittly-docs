@@ -1,0 +1,46 @@
+import { Steps, Callout } from "nextra/components";
+
+**Please first read [can I use Sittly?](/can-i-use)**
+
+## Requirements
+
+Once you meet all the conditions exposed in [can I use Sittly?](/can-i-use), you can install sittly with the following command:
+
+<Steps>
+
+### 📚 Libraries
+
+In order to
+
+#### Install linux dependencies
+
+Sittly highly depends on the following libraries:
+
+- xsel
+- xdotool
+- xclip
+
+```bash filename="debian distros" copy
+sudo apt install xsel xdotool xclip
+```
+
+<Callout type="info" emoji="ℹ️">
+  If you're using a different distro than debian based, you'll need to install
+  these libraries manually.
+</Callout>
+
+### 📦 Install sittly
+
+Go to https://github.com/JulianKominovic/sittly-launcher/releases and download the latest version of sittly.
+
+Once you have the file, you can install it with the following command:
+
+```bash filename="install sittly" copy
+sudo apt install FILE_PATH_TO_DOWNLOADED_FILE
+```
+
+### Let's go! 🚀
+
+![Sittly ubuntu apps entry]()
+
+</Steps>

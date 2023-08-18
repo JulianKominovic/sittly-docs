@@ -1,0 +1,16 @@
+import { Steps, Callout } from "nextra/components";
+
+## How extensions are loaded?
+
+Each reload of the application, the extension loader will load the extensions from the compiled files.
+
+```mermaid
+flowchart TD
+    FIRST_LOAD[Sittly load] --> EXTENSION_LOADER[Extension loader]
+    EXTENSION_LOADER-->READ_EXTENSION_FILE[Read compiled extensions files]
+    READ_EXTENSION_FILE-->|Extensions loaded|LOAD_APP[Load application]
+```
+
+## How extensions are compiled?
+
+Sittly does not compile the extensions, it just load the compiled files. The extensions must be compiled and submitted to Github.

@@ -1,0 +1,23 @@
+{
+  "index": "⚡ Introduction",
+  "can-i-use": "🤔 Can I use Sittly?",
+  "install": "💾  Installation",
+  "extensions": {
+    "title": "🧩 Extensions"
+  },
+  "devtools": {
+    "title": "🛠️ Devtools"
+  },
+  "roadmap": "🗺️ Roadmap",
+
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "contact": {
+    "title": "Contact ↗",
+    "type": "page",
+    "href": "",
+    "newWindow": true
+  }
+}
