@@ -21,5 +21,9 @@ export default async function StorePage({ params, searchParams }) {
 
   const extensions = data as ExtensionModel[];
   console.log({ data, count, error, status, statusText });
-  return <main className="min-h-screen">{extensions.map(ExtensionItem)}</main>;
+  return (
+    <main className="w-full max-w-lg min-h-screen p-4 pb-20 mx-auto">
+      {extensions.map(ExtensionItem)}
+    </main>
+  );
 }

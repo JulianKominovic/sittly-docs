@@ -66,7 +66,7 @@ async function fetchSittlyReleases(): Promise<DownloadAssets> {
 async function page(props: Props) {
   const { downloads, tag } = await fetchSittlyReleases();
   return (
-    <>
+    <main className="w-full max-w-lg p-4 pb-20 mx-auto">
       <header className="my-8">
         <div>
           <h1 id="home" className="text-5xl text-neutral-800">
@@ -248,7 +248,7 @@ async function page(props: Props) {
           <span className="inline-block -rotate-45">{"->"}</span>
         </a>
       </section>
-    </>
+    </main>
   );
 }
 

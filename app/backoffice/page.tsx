@@ -1,24 +1,31 @@
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { EXTENSIONS_DB_TABLE } from "../../config/constants";
-import { currentUser } from "@clerk/nextjs";
+import Link from "next/link";
 import ExtensionItem from "../../components/ExtensionItem";
-import { ExtensionModel } from "../../types/db";
+import { getUserExtensions } from "../../server-actions/db/extensions";
 
 export const dynamic = "force-dynamic";
 
 export default async function ServerComponent() {
-  const user = await currentUser();
-  if (!user) return <p>Not logged in</p>;
-  if (!user.id) return <p>Not logged in</p>;
-
-  const supabase = createServerComponentClient({ cookies });
-  const { data, error } = await supabase
-    .from(EXTENSIONS_DB_TABLE)
-    .select("")
-    .eq("user_id", user.id);
-  if (error) return <p>{error.message}</p>;
-  if (data.length === 0) return <p>No extensions</p>;
-  const extensions = data as unknown as ExtensionModel[];
-  return <main>{extensions.map(ExtensionItem)}</main>;
+  const extensions = await getUserExtensions();
+  if (!extensions)
+    return (
+      <main className="min-h-screen pt-20 text-center">
+        Extensions not found
+      </main>
+    );
+  return (
+    <>
+      <header className="flex items-center justify-between mb-8">
+        <h1 className="text-4xl">My extensions</h1>
+        <Link
+          className="flex items-center justify-center px-4 py-2 transition-colors rounded-lg bg-neutral-800 text-neutral-200 hover:bg-neutral-700 "
+          href={"/backoffice/create"}
+        >
+          Create
+        </Link>
+      </header>
+      {extensions.map((props) => (
+        <ExtensionItem {...props} isBackoffice />
+      ))}
+    </>
+  );
 }

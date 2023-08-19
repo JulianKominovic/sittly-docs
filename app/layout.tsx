@@ -37,7 +37,7 @@ export default function RootLayout({
       <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
         <body className="w-full overflow-x-hidden bg-slate-100">
           <nav className="sticky top-0 left-0 w-full bg-slate-100 bg-opacity-90 saturate-150 backdrop-blur-md">
-            <ul className="flex max-w-lg px-2 mx-auto">
+            <ul className="flex flex-wrap max-w-lg px-2 mx-auto">
               <li className="self-center px-2 py-4">
                 <a href="/">Home</a>
               </li>
@@ -47,16 +47,15 @@ export default function RootLayout({
               <li className="self-center flex-grow px-2 py-4">
                 <Link href="/docs">Docs</Link>
               </li>
+              <li className="self-center px-2 py-4">
+                <Link href="/backoffice">My extensions</Link>
+              </li>
               <li className="flex items-center self-center gap-4 px-2 py-4">
                 <UserButton />
               </li>
             </ul>
           </nav>
-          <div className="w-full bg-slate-100 bg-opacity-90">
-            <main className="w-full max-w-lg p-4 pb-20 mx-auto">
-              {children}
-            </main>
-          </div>
+          <div className="w-full bg-slate-100 bg-opacity-90">{children}</div>
           <Image
             loading="eager"
             priority={false}

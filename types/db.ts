@@ -5,4 +5,5 @@ export type ExtensionModel = {
   body: string;
   user_id: string;
   icon_url: string;
+  id: string;
 };
