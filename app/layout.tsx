@@ -7,11 +7,49 @@ import blurryShapes from "../assets/images/deco.jpg";
 import Github from "../components/icons/Github";
 import { ClerkProvider } from "@clerk/nextjs";
 import UserButton from "../components/UserButton";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Sittly Launcher - Fast and lightweight launcher for Linux X11",
   description:
     "Sittly is like Raycast, Spotlight or Albert for Linux X11. It is fast, lightweight and easy to use. It is written in Rust and uses React. It is open source and free to use.",
+  twitter: {
+    creator: "@juliankominovic",
+    description:
+      "Sittly is like Raycast, Spotlight or Albert for Linux X11. It is fast, lightweight and easy to use. It is written in Rust and uses React. It is open source and free to use.",
+    title: "Sittly Launcher - Fast and lightweight launcher for Linux X11",
+    images: ["/images/sittly-banner.png"],
+  },
+  authors: [{ name: "Julian Kominovic", url: "https://jkominovic.vercel.app" }],
+  category: "Software Development",
+  creator: "Julian Kominovic",
+  manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    countryName: "Argentina",
+    description:
+      "Sittly is like Raycast, Spotlight or Albert for Linux X11. It is fast, lightweight and easy to use. It is written in Rust and uses React. It is open source and free to use.",
+    images: [{ url: "/images/sittly-banner.png" }],
+    locale: "en_US",
+    title: "Sittly Launcher - Fast and lightweight launcher for Linux X11",
+    emails: ["juliankominovic@gmail.com"],
+  },
+  keywords: [
+    "sittly",
+    "launcher",
+    "linux",
+    "x11",
+    "raycast",
+    "spotlight",
+    "albert",
+    "rust",
+    "react",
+    "open source",
+    "free",
+    "fast",
+    "lightweight",
+    "tauri",
+  ],
 };
 // If loading a variable font, you don't need to specify the font weight
 const montserrat = Montserrat({
