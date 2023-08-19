@@ -8,16 +8,5 @@
   "devtools": {
     "title": "🛠️ Devtools"
   },
-  "roadmap": "🗺️ Roadmap",
-
-  "about": {
-    "title": "About",
-    "type": "page"
-  },
-  "contact": {
-    "title": "Contact ↗",
-    "type": "page",
-    "href": "",
-    "newWindow": true
-  }
+  "roadmap": "🗺️ Roadmap"
 }

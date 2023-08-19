@@ -7,5 +7,14 @@ const withNextra = require("nextra")({
 module.exports = withNextra({
   experimental: {
     appDir: true,
+    serverActions: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 });

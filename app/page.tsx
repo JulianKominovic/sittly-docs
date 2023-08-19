@@ -11,64 +11,65 @@ import {
 } from "../types/github-release";
 import { DownloadButtons } from "../components/download-buttons";
 import Link from "next/link";
-import blurryShapes from "../assets/images/deco.jpg";
+import { cache } from "react";
+import { RELEASES_MOCK } from "../__mocks__/releases";
+import Github from "../components/icons/Github";
 
 type Props = {};
 
+let releases: DownloadAssets | null = null;
+
 async function fetchSittlyReleases(): Promise<DownloadAssets> {
+  if (releases) {
+    return Promise.resolve(releases);
+  }
+
   // const response: GithubRelease[] = await fetch(
   //   "https://api.github.com/repos/JulianKominovic/sittly-launcher/releases",
   //   {
-  //     next: {
-  //       revalidate: 60 * 60 * 24,
-  //     },
+  //     cache: "force-cache",
   //   }
   // )
-  //   .then((response) => response.json())
+  //   .then((response) => {
+  //     return response.json();
+  //   })
   //   .catch((error) => {
   //     console.log(error);
   //     return [];
   //   });
+  const response: GithubRelease[] = RELEASES_MOCK;
 
-  // const newerRelease = response[0];
-  // if (!newerRelease) return { downloads: [], tag: "" };
-  // const assets = newerRelease.assets;
+  const newerRelease = response[0];
+  if (!newerRelease) return { downloads: [], tag: "" };
+  const assets = newerRelease.assets;
 
-  // const downloads: DownloadAssets["downloads"] = assets.map((asset) => {
-  //   if (asset.content_type === "application/vnd.debian.binary-package")
-  //     return {
-  //       name: "Debian",
-  //       url: asset.browser_download_url,
-  //     };
-  //   return {
-  //     name: "AppImage",
-  //     url: asset.browser_download_url,
-  //   };
-  // });
-
-  // return {
-  //   downloads,
-  //   tag: newerRelease.tag_name,
-  // };
-  return {
-    downloads: [
-      {
+  const downloads: DownloadAssets["downloads"] = assets.map((asset) => {
+    if (asset.content_type === "application/vnd.debian.binary-package")
+      return {
         name: "Debian",
-        url: "",
-      },
-    ],
-    tag: "0.0.0",
+        url: asset.browser_download_url,
+      };
+    return {
+      name: "AppImage",
+      url: asset.browser_download_url,
+    };
+  });
+
+  releases = {
+    downloads,
+    tag: newerRelease.tag_name,
   };
+
+  return releases;
 }
 
 async function page(props: Props) {
   const { downloads, tag } = await fetchSittlyReleases();
-  console.log(downloads, tag);
   return (
-    <main className="p-4 pb-20 mx-auto max-w-lg">
-      <header className="">
+    <>
+      <header className="my-8">
         <div>
-          <h1 id="home" className="text-neutral-800 text-5xl">
+          <h1 id="home" className="text-5xl text-neutral-800">
             Sittly <span className="text-xs">v {tag}</span>
           </h1>
           <p className="text-neutral-600">
@@ -76,43 +77,54 @@ async function page(props: Props) {
           </p>
           <div className="flex flex-col my-4">
             <DownloadButtons downloads={downloads} tag={tag} />
-            <small className="text-neutral-500 mt-1 text-xs">
-              Sittly is ONLY tested on X11 desktops, like ubuntu(gnome). It may
-              work on other desktops, but it's not guaranteed.
+            <small className="mt-2 text-xs text-neutral-500">
+              * Sittly is ONLY tested on X11 desktops, like ubuntu(gnome). It
+              may work on other desktops, but it's not guaranteed.
             </small>
+            <a
+              target="_blank"
+              href="https://github.com/JulianKominovic/sittly-launcher"
+              className="flex items-center gap-1 mt-2"
+            >
+              <Github />
+              <span className="underline underline-offset-4">
+                See github repo
+              </span>
+              <span className="inline-block -rotate-45">{"->"}</span>
+            </a>
           </div>
         </div>
-        <Image
-          priority
-          src={sittly.src}
-          alt="Sittly landing page"
-          width={sittly.width}
-          height={sittly.height}
-        />
-        <Image
-          priority
-          src={sittlyAddExtension.src}
-          alt="Sittly add extension"
-          width={sittlyAddExtension.width}
-          height={sittlyAddExtension.height}
-        />
-        <Image
-          loading="lazy"
-          src={sittlySelectEmoji.src}
-          alt="Sittly Select emoji"
-          width={sittlySelectEmoji.width}
-          height={sittlySelectEmoji.height}
-        />
-        <Image
-          loading="lazy"
-          src={sittlyContextMenuEmoji.src}
-          alt="Sittly Select emoji context menu"
-          width={sittlyContextMenuEmoji.width}
-          height={sittlyContextMenuEmoji.height}
-        />
       </header>
-      <section className="mt-10 rounded-lg bg-amber-50 px-4 border border-amber-200 py-4">
-        <h2 className="text-3xl text-neutral-800 flex items-center gap-2">
+      <Image
+        priority
+        src={sittly.src}
+        alt="Sittly landing page"
+        width={sittly.width}
+        height={sittly.height}
+      />
+      <Image
+        priority
+        src={sittlyAddExtension.src}
+        alt="Sittly add extension"
+        width={sittlyAddExtension.width}
+        height={sittlyAddExtension.height}
+      />
+      <Image
+        loading="lazy"
+        src={sittlySelectEmoji.src}
+        alt="Sittly Select emoji"
+        width={sittlySelectEmoji.width}
+        height={sittlySelectEmoji.height}
+      />
+      <Image
+        loading="lazy"
+        src={sittlyContextMenuEmoji.src}
+        alt="Sittly Select emoji context menu"
+        width={sittlyContextMenuEmoji.width}
+        height={sittlyContextMenuEmoji.height}
+      />
+      <section className="px-4 py-4 mt-10 border rounded-lg bg-amber-50 border-amber-200">
+        <h2 className="flex items-center gap-2 text-3xl text-neutral-800">
           Current status{" "}
           <span className="px-2 py-0.5 text-xs bg-amber-100 text-amber-600 border border-amber-300 rounded-lg">
             Alpha
@@ -132,24 +144,24 @@ async function page(props: Props) {
           <li>{"->"} Navigation</li>
           <li>{"->"} Pages</li>
         </ul>
-        <Link href={"/docs"} className="underline block underline-offset-4">
+        <Link href={"/docs"} className="block underline underline-offset-4">
           If you have some free time check out the docs{" ->"}
         </Link>
         <Link
           href={"/docs/roadmap"}
-          className="underline block underline-offset-4"
+          className="block underline underline-offset-4"
         >
           Follow the development goals{" ->"}
         </Link>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800" id="extensions">
           Extensible
         </h2>
         <p className="text-neutral-600">
           Sittly is extensible, you can create your own extensions or download
           them from the community.{" "}
-          <small className="text-amber-600 font-medium">
+          <small className="font-medium text-amber-600">
             (extensions store is under development)
           </small>
         </p>
@@ -163,7 +175,7 @@ async function page(props: Props) {
           </Link>
         </p>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800">Shortcuts</h2>
         <p className="text-neutral-600">
           Open Sittly with{" "}
@@ -176,7 +188,7 @@ async function page(props: Props) {
           See shorcuts in our docs{" ->"}
         </Link>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800">Agility</h2>
         <p className="text-neutral-600">
           Related to shortcuts and extensibility, Sittly is designed to be
@@ -184,7 +196,7 @@ async function page(props: Props) {
           to navigate through the app with your keyboard, mouse or both.
         </p>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800">Performance</h2>
         <p className="text-neutral-600">
           Performance is one of our main goals, so we are using{" "}
@@ -194,13 +206,13 @@ async function page(props: Props) {
             className="underline underline-offset-4"
             rel="noopener noreferrer"
           >
-            Tauri <span className="-rotate-45 inline-block">{"->"}</span>
+            Tauri <span className="inline-block -rotate-45">{"->"}</span>
           </a>{" "}
           (Rust) and React using libraries and techniques that allow us to have
           a good performance.
         </p>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800">
           From developers to developers
         </h2>
@@ -209,7 +221,7 @@ async function page(props: Props) {
           you can't use it if you are not a developer, but it means that we are
           focused on developers needs.
         </p>
-        <Link href={"/docs"} className="underline block underline-offset-4">
+        <Link href={"/docs"} className="block underline underline-offset-4">
           Take a look at our docs{" ->"}
         </Link>
         <a
@@ -218,10 +230,10 @@ async function page(props: Props) {
           className="underline underline-offset-4"
         >
           See Github repo{" "}
-          <span className="-rotate-45 inline-block">{"->"}</span>
+          <span className="inline-block -rotate-45">{"->"}</span>
         </a>
       </section>
-      <section className="mt-20 px-4">
+      <section className="px-4 mt-20">
         <h2 className="text-3xl text-neutral-800">Open source</h2>
         <p className="text-neutral-600">
           We believe open source means security and transparency, so we decided
@@ -233,10 +245,10 @@ async function page(props: Props) {
           className="underline underline-offset-4"
         >
           See Github repo{" "}
-          <span className="-rotate-45 inline-block">{"->"}</span>
+          <span className="inline-block -rotate-45">{"->"}</span>
         </a>
       </section>
-    </main>
+    </>
   );
 }
 
