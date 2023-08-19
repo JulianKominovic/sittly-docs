@@ -4,18 +4,11 @@ import sittly from "../assets/images/sittly-landing.png";
 import sittlySelectEmoji from "../assets/images/sittly-select-emoji.png";
 import sittlyAddExtension from "../assets/images/sittly-add-extension.png";
 import sittlyContextMenuEmoji from "../assets/images/sittly-context-menu.png";
-import {
-  AssetDownloadFileTypes,
-  DownloadAssets,
-  GithubRelease,
-} from "../types/github-release";
+import { DownloadAssets, GithubRelease } from "../types/github-release";
 import { DownloadButtons } from "../components/download-buttons";
 import Link from "next/link";
-import { cache } from "react";
 import { RELEASES_MOCK } from "../__mocks__/releases";
 import Github from "../components/icons/Github";
-
-type Props = {};
 
 let releases: DownloadAssets | null = null;
 
@@ -63,7 +56,7 @@ async function fetchSittlyReleases(): Promise<DownloadAssets> {
   return releases;
 }
 
-async function page(props: Props) {
+async function page() {
   const { downloads, tag } = await fetchSittlyReleases();
   return (
     <main className="w-full max-w-lg p-4 pb-20 mx-auto">

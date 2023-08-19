@@ -1,7 +1,7 @@
 import { DownloadAssets } from "../types/github-release";
 import Debian from "./icons/Debian";
 import Download from "./icons/Download";
-export function DownloadButtons({ downloads }: DownloadAssets) {
+export function DownloadButtons({ downloads }: DownloadAssets): any {
   return downloads.map((asset) => {
     let Icon: React.ReactNode = null;
     if (asset.name === "Debian") {

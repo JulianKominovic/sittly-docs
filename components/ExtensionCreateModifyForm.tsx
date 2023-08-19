@@ -1,5 +1,5 @@
 import React from "react";
-export default async function ExtensionCreateModifyFormServerComponent({
+export default function ExtensionCreateModifyFormServerComponent({
   action,
   method = "POST",
   defaultValues,
