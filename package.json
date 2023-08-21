@@ -18,29 +18,29 @@
   },
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
-    "@clerk/nextjs": "^4.23.2",
+    "@clerk/nextjs": "4.23.2",
     "@next/font": "latest",
-    "@supabase/auth-helpers-nextjs": "^0.7.4",
-    "@supabase/supabase-js": "^2.32.0",
-    "clsx": "^2.0.0",
-    "framer-motion": "^10.16.0",
+    "@supabase/auth-helpers-nextjs": "0.7.4",
+    "@supabase/supabase-js": "2.32.0",
+    "clsx": "2.0.0",
+    "framer-motion": "10.16.0",
     "next": "latest",
-    "nextra": "^2.11.0",
-    "nextra-theme-blog": "^2.11.0",
-    "nextra-theme-docs": "^2.11.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.7",
-    "rehype-prism-plus": "^1.6.3",
-    "remark-gfm": "^3.0.1",
-    "sharp": "^0.32.5"
+    "nextra": "2.11.0",
+    "nextra-theme-blog": "2.11.0",
+    "nextra-theme-docs": "2.11.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-markdown": "8.0.7",
+    "rehype-prism-plus": "1.6.3",
+    "remark-gfm": "3.0.1",
+    "sharp": "0.32.5"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.9",
+    "@tailwindcss/typography": "0.5.9",
     "@types/node": "18.11.10",
-    "autoprefixer": "^10.4.15",
-    "postcss": "^8.4.28",
-    "tailwindcss": "^3.3.3",
-    "typescript": "^4.9.3"
+    "autoprefixer": "10.4.15",
+    "postcss": "8.4.28",
+    "tailwindcss": "3.3.3",
+    "typescript": "4.9.3"
   }
 }

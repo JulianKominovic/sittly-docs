@@ -1,0 +1,10 @@
+{
+  "name": "Sittly launcher - A launcher like Raycast or Spotlight but for Linux.",
+  "short_name": "Sittly launcher",
+  "theme_color": "#f0d48f",
+  "background_color": "#f0d48f",
+  "display": "browser",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}

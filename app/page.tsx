@@ -1,13 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import sittly from "../assets/images/sittly-landing.png";
-import sittlySelectEmoji from "../assets/images/sittly-select-emoji.png";
-import sittlyAddExtension from "../assets/images/sittly-add-extension.png";
-import sittlyContextMenuEmoji from "../assets/images/sittly-context-menu.png";
+import sittlyShortcuts from "../assets/images/sittly-shortcuts.png";
+import sittlyExtensionStore from "../assets/images/sittly-store.png";
 import { DownloadAssets, GithubRelease } from "../types/github-release";
 import { DownloadButtons } from "../components/download-buttons";
 import Link from "next/link";
-import { RELEASES_MOCK } from "../__mocks__/releases";
 import Github from "../components/icons/Github";
 
 let releases: DownloadAssets | null = null;
@@ -17,20 +15,19 @@ async function fetchSittlyReleases(): Promise<DownloadAssets> {
     return Promise.resolve(releases);
   }
 
-  // const response: GithubRelease[] = await fetch(
-  //   "https://api.github.com/repos/JulianKominovic/sittly-launcher/releases",
-  //   {
-  //     cache: "force-cache",
-  //   }
-  // )
-  //   .then((response) => {
-  //     return response.json();
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //     return [];
-  //   });
-  const response: GithubRelease[] = RELEASES_MOCK;
+  const response: GithubRelease[] = await fetch(
+    "https://api.github.com/repos/JulianKominovic/sittly-launcher/releases",
+    {
+      cache: "force-cache",
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error);
+      return [];
+    });
 
   const newerRelease = response[0];
   if (!newerRelease) return { downloads: [], tag: "" };
@@ -62,12 +59,15 @@ async function page() {
     <main className="w-full max-w-lg p-4 pb-20 mx-auto">
       <header className="my-8">
         <div>
-          <h1 id="home" className="text-5xl text-neutral-800">
-            Sittly <span className="text-xs">v {tag}</span>
-          </h1>
-          <p className="text-neutral-600">
-            Laucher like Raycast or Spotlight but for <u>Linux</u>
-          </p>
+          <div>
+            {" "}
+            <h1 id="home" className="text-5xl text-neutral-800">
+              Sittly <span className="text-xs">v {tag}</span>
+            </h1>
+            <p className="text-neutral-600">
+              Laucher like Raycast or Spotlight but for <u>Linux</u>
+            </p>
+          </div>
           <div className="flex flex-col my-4">
             <DownloadButtons downloads={downloads} tag={tag} />
             <small className="mt-2 text-xs text-neutral-500">
@@ -77,7 +77,7 @@ async function page() {
             <a
               target="_blank"
               href="https://github.com/JulianKominovic/sittly-launcher"
-              className="flex items-center gap-1 mt-2"
+              className="flex items-center gap-1 mt-4"
             >
               <Github />
               <span className="underline underline-offset-4">
@@ -95,27 +95,7 @@ async function page() {
         width={sittly.width}
         height={sittly.height}
       />
-      <Image
-        priority
-        src={sittlyAddExtension.src}
-        alt="Sittly add extension"
-        width={sittlyAddExtension.width}
-        height={sittlyAddExtension.height}
-      />
-      <Image
-        loading="lazy"
-        src={sittlySelectEmoji.src}
-        alt="Sittly Select emoji"
-        width={sittlySelectEmoji.width}
-        height={sittlySelectEmoji.height}
-      />
-      <Image
-        loading="lazy"
-        src={sittlyContextMenuEmoji.src}
-        alt="Sittly Select emoji context menu"
-        width={sittlyContextMenuEmoji.width}
-        height={sittlyContextMenuEmoji.height}
-      />
+
       <section className="px-4 py-4 mt-10 border rounded-lg bg-amber-50 border-amber-200">
         <h2 className="flex items-center gap-2 text-3xl text-neutral-800">
           Current status{" "}
@@ -144,7 +124,7 @@ async function page() {
           href={"/docs/roadmap"}
           className="block underline underline-offset-4"
         >
-          Follow the development goals{" ->"}
+          See roadmap{" ->"}
         </Link>
       </section>
       <section className="px-4 mt-20">
@@ -152,12 +132,17 @@ async function page() {
           Extensible
         </h2>
         <p className="text-neutral-600">
-          Sittly is extensible, you can create your own extensions or download
-          them from the community.{" "}
-          <small className="font-medium text-amber-600">
-            (extensions store is under development)
-          </small>
+          Sittly is extensible, you can create your own extensions and download
+          from the community using the <b>store</b>.
         </p>
+        <Image
+          className="-mx-3"
+          loading="lazy"
+          src={sittlyExtensionStore.src}
+          alt="Sittly extension store"
+          width={sittlyExtensionStore.width}
+          height={sittlyExtensionStore.height}
+        />
         <p>
           If you are interested in creating your own extension, see{" "}
           <Link
@@ -166,6 +151,12 @@ async function page() {
           >
             extensions docs{" ->"}
           </Link>
+        </p>
+        <p>
+          Download them from the app or{" "}
+          <Link href={"/store"} className="underline underline-offset-4">
+            see the store {" ->"}
+          </Link>{" "}
         </p>
       </section>
       <section className="px-4 mt-20">
@@ -177,6 +168,13 @@ async function page() {
           </kbd>{" "}
           and start typing. We are starting to work on shortcuts soon.
         </p>
+        <Image
+          loading="lazy"
+          src={sittlyShortcuts.src}
+          alt="Sittly shortcuts"
+          width={sittlyShortcuts.width}
+          height={sittlyShortcuts.height}
+        />
         <Link href={"/docs"} className="underline underline-offset-4">
           See shorcuts in our docs{" ->"}
         </Link>
