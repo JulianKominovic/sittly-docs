@@ -14,7 +14,10 @@ export default function ExtensionItem({
 }) {
   if (isBackoffice)
     return (
-      <div className="flex flex-col gap-2 px-6 py-4 mb-6 transition-colors border rounded-lg bg-neutral-50 border-neutral-50 hover:bg-neutral-100 hover:transition-colors">
+      <div
+        key={id}
+        className="flex flex-col gap-2 px-6 py-4 mb-6 transition-colors border rounded-lg bg-neutral-50 border-neutral-50 hover:bg-neutral-200 hover:transition-colors"
+      >
         <header className="flex items-center gap-4">
           <img
             className="rounded-md"
@@ -40,15 +43,16 @@ export default function ExtensionItem({
           </aside>
         </header>
         <p className="text-sm truncate text-neutral-600">{url}</p>
-        <p>{body}</p>
+        <pre className="whitespace-pre-wrap line-clamp-4">{body}</pre>
         <p className="text-sm text-neutral-600">Made by {author}</p>
       </div>
     );
 
   return (
     <Link
+      key={id}
       href={`/store/${id}`}
-      className="flex flex-col gap-2 px-6 py-4 mb-6 transition-colors border rounded-lg bg-neutral-50 border-neutral-50 hover:bg-neutral-100 hover:transition-colors"
+      className="flex flex-col gap-2 px-6 py-4 mb-6 transition-colors border rounded-lg bg-neutral-50 border-neutral-50 hover:bg-neutral-200 hover:transition-colors"
     >
       <header className="flex items-center gap-4">
         <img
@@ -61,7 +65,7 @@ export default function ExtensionItem({
         <h2 className="text-2xl font-bold">{name}</h2>
       </header>
       <p className="text-sm truncate text-neutral-600">{url}</p>
-      <p>{body}</p>
+      <pre className="whitespace-pre-wrap line-clamp-4">{body}</pre>
       <p className="text-sm text-neutral-600">Made by {author}</p>
     </Link>
   );

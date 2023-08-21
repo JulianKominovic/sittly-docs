@@ -4,7 +4,6 @@ import "./global.css";
 import Link from "next/link";
 import Image from "next/image";
 import blurryShapes from "../assets/images/deco.jpg";
-import Github from "../components/icons/Github";
 import { ClerkProvider } from "@clerk/nextjs";
 import UserButton from "../components/UserButton";
 import { Metadata } from "next";
@@ -74,7 +73,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
         <body className="w-full overflow-x-hidden bg-slate-100">
-          <nav className="sticky top-0 left-0 w-full bg-slate-100 bg-opacity-90 saturate-150 backdrop-blur-md">
+          <nav className="sticky top-0 left-0 z-40 w-full bg-slate-100 bg-opacity-90 saturate-150 backdrop-blur-md">
             <ul className="flex flex-wrap max-w-lg px-2 mx-auto">
               <li className="self-center px-2 py-4">
                 <a href="/">Home</a>
