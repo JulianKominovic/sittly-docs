@@ -1,4 +1,3 @@
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypePrism from "rehype-prism-plus";
@@ -9,7 +8,7 @@ import "../../styles/template/plugin-line-numbers.css";
 function textContentAsID(textContent: string) {
   return textContent.replace(/ /g, "-").toLocaleLowerCase();
 }
-export default async function Markdown({ children, githubRepoUrl }) {
+export default function Markdown({ children, githubRepoUrl }) {
   if (typeof children !== "string")
     throw new Error("Markdown component must have a string as children");
   return (

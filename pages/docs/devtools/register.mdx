@@ -1,8 +1,14 @@
+import { Steps, Callout } from "nextra/components";
+
 # Register
 
 Used for Sittly to register a new extension.
 
-All items, pages, no-results, metadata and context menu options must be registered using `register` function from `sittly devtools`.
+<Callout type="error" emoji="❗">
+  **All** items, pages, no-results, metadata and context menu options **must be
+  registered** using `register` function from `window.SittlyDevtools` **at the
+  end of the file**
+</Callout>
 
 ```tsx showLineNumbers {74-78}
 const { components, hooks, api, register, types, utils } =

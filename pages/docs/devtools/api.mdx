@@ -104,6 +104,8 @@ const items: ExtensionItems = () => [
 
 Methods to interact with the OS notifications.
 
+### sendNotification
+
 > **Note:** Tauri seems to use the freedesktop.org icon naming specification for icons see https://specifications.freedesktop.org/icon-naming-spec/latest/ar01s04.html
 
 ```tsx showLineNumbers {4,9-13}
@@ -155,6 +157,44 @@ const items: ExtensionItems = () => [
     title: "Open file",
     onClick: () => {
       openURI("home/example/test.txt");
+    },
+  },
+];
+```
+
+## Files
+
+### saveImage
+
+Save an image to user's disk given a URL.
+
+Get the image from the network and save it to the user's disk. The image will be saved in the default downloads directory with the name specified in the `filename` parameter.
+
+1. **Fetch the image from the network.** If the image is not found, it will throw an error and show a notification.
+2. **Gets the binary data from the response.** If the image is not found, it will throw an error and show a notification.
+3. **Detects the image format from the binary data.** If the image is not found, it will throw an error and show a notification.
+4. **Trigger a prompt to save the file.**
+5. **Save the file to the user's disk.**
+
+Get the method from `window.SittlyDevtools`
+
+```tsx showLineNumbers /saveImage/
+const { api } = window.SittlyDevtools;
+const { files } = api;
+const { saveImage } = files;
+```
+
+Example:
+
+```tsx showLineNumbers /saveImage/
+const { api } = window.SittlyDevtools;
+const { files } = api;
+const { saveImage } = files;
+const items: ExtensionItems = () => [
+  {
+    title: "Save image",
+    onClick: () => {
+      saveImage("https://example-domain/image.png");
     },
   },
 ];
