@@ -13,9 +13,10 @@ export default function Markdown({ children, githubRepoUrl }) {
     throw new Error("Markdown component must have a string as children");
   return (
     <ReactMarkdown
+      className="[&__code]:!whitespace-pre-line [&__pre]:rounded-lg"
       remarkPlugins={[remarkGfm]}
       //https://github.com/PrismJS/prism-themes
-      rehypePlugins={[[rehypePrism, { showLineNumbers: true }]]}
+      rehypePlugins={[[rehypePrism]]}
       components={{
         img: ({ src, ...props }) => {
           const imageSource =

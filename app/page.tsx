@@ -7,18 +7,21 @@ import { DownloadAssets, GithubRelease } from "../types/github-release";
 import { DownloadButtons } from "../components/download-buttons";
 import Link from "next/link";
 import Github from "../components/icons/Github";
+import Markdown from "../components/markdown/render";
 
-let releases: DownloadAssets | null = null;
+let releases: DownloadAssets = {
+  downloads: [],
+  tag: "",
+};
 
 async function fetchSittlyReleases(): Promise<DownloadAssets> {
-  if (releases) {
-    return Promise.resolve(releases);
-  }
-
   const response: GithubRelease[] = await fetch(
     "https://api.github.com/repos/JulianKominovic/sittly-launcher/releases",
     {
-      cache: "force-cache",
+      next: {
+        // Each 10 minutes
+        revalidate: 60 * 10,
+      },
     }
   )
     .then((response) => {
@@ -30,7 +33,7 @@ async function fetchSittlyReleases(): Promise<DownloadAssets> {
     });
 
   const newerRelease = response[0];
-  if (!newerRelease) return { downloads: [], tag: "" };
+  if (!newerRelease) return releases;
   const assets = newerRelease.assets;
 
   const downloads: DownloadAssets["downloads"] = assets.map((asset) => {
@@ -55,12 +58,27 @@ async function fetchSittlyReleases(): Promise<DownloadAssets> {
 
 async function page() {
   const { downloads, tag } = await fetchSittlyReleases();
+  const debianDownload = downloads.find((d) => d.name === "Debian");
+  const installBashScript = `
+  \`\`\`bash title='try-now.sh' copy
+  # Create .sittly folder
+  mkdir -p ~/.sittly
+  cd ~/.sittly
+  # Install Sittly libraries
+  sudo apt install xsel xdotool xclip
+  # Download Sittly .deb
+  wget ${debianDownload?.url}
+  # Install Sittly
+  sudo apt install ./${debianDownload?.url.split("/").pop()}
+
+  \`\`\`
+  `;
+
   return (
     <main className="w-full max-w-lg p-4 pb-20 mx-auto">
       <header className="my-8">
         <div>
           <div>
-            {" "}
             <h1 id="home" className="text-5xl text-neutral-800">
               Sittly <span className="text-xs">v {tag}</span>
             </h1>
@@ -71,8 +89,8 @@ async function page() {
           <div className="flex flex-col my-4">
             <DownloadButtons downloads={downloads} tag={tag} />
             <small className="mt-2 text-xs text-neutral-500">
-              * Sittly is ONLY tested on X11 desktops, like ubuntu(gnome). It
-              may work on other desktops, but it's not guaranteed.
+              * Sittly is ONLY tested on Ubuntu 22.04 (xorg NOT wayland). It may
+              work on other desktops, but it's not guaranteed.
             </small>
             <a
               target="_blank"
@@ -95,6 +113,14 @@ async function page() {
         width={sittly.width}
         height={sittly.height}
       />
+
+      <h2 className="mt-20 text-3xl text-neutral-800" id="extensions">
+        Try it!
+      </h2>
+      <p className="text-neutral-600">
+        Copy and paste the following code into a terminal
+      </p>
+      <Markdown githubRepoUrl={""}>{installBashScript}</Markdown>
 
       <section className="px-4 py-4 mt-10 border rounded-lg bg-amber-50 border-amber-200">
         <h2 className="flex items-center gap-2 text-3xl text-neutral-800">
