@@ -65,7 +65,7 @@ async function page() {
   mkdir -p ~/.sittly
   cd ~/.sittly
   # Install Sittly libraries
-  sudo apt install xsel xdotool xclip
+  sudo apt install xsel xdotool xclip wmctrl
   # Download Sittly .deb
   wget ${debianDownload?.url}
   # Install Sittly
