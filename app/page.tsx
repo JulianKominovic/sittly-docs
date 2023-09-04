@@ -65,7 +65,7 @@ async function page() {
   mkdir -p ~/.sittly
   cd ~/.sittly
   # Install Sittly libraries
-  sudo apt install xsel xdotool xclip wmctrl
+  sudo apt install xsel xdotool xclip wmctrl imagemagick
   # Download Sittly .deb
   wget ${debianDownload?.url}
   # Install Sittly
@@ -114,7 +114,7 @@ async function page() {
         height={sittly.height}
       />
 
-      <h2 className="mt-20 text-3xl text-neutral-800" id="extensions">
+      <h2 className="mt-20 text-3xl text-neutral-800" id="try-it">
         Try it!
       </h2>
       <p className="text-neutral-600">
